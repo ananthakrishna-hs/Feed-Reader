@@ -108,27 +108,24 @@ $(function() {
             let feed1=[],feed2=[],feed,initialIndex,finalIndex;
         /**
         *@description Before async tests of the suite
-        *@param {function} - The function loads an initial feed for a 
-        * random index of allFeeds
+        *@param {function} - The nested function loads an initial feed for a 
+        * random index of allFeeds and in turn calls for a final feed.
         */
-        beforeEach(function(done) { 
-            initialIndex=Math.floor(Math.random()*allFeeds.length);
+        beforeEach(function(done) {
+        	initialIndex=Math.floor(Math.random()*allFeeds.length);
             finalIndex=Math.floor(Math.random()*allFeeds.length);
             while(initialIndex===finalIndex)
                 // To obtain two different indices
                 finalIndex=Math.floor(Math.random()*allFeeds.length);
-            loadFeed(initialIndex,done);
-        });
-        /**
-        *@description Before async tests of the suite
-        *@param {function} - The function loads a final feed for a 
-        * random index of allFeeds
-        */
-        beforeEach(function(done) {
-            feed =$('.feed .entry');
-            for(let i=0;i<feed.length;i++)
-                feed1.push(feed[i].innerText);
-            loadFeed(finalIndex,done);
+            loadFeed(initialIndex, function() {
+            	feed=$('.feed .entry');
+                feed1=Array.from(feed);
+                loadFeed(finalIndex, function() {
+                	feed=$('.feed .entry');
+                	feed2=Array.from(feed);
+                	done();
+                });
+            });
         });
         /**
         *@description Test spec- Tests whether entry changes 
@@ -136,9 +133,6 @@ $(function() {
         * two different indices
         */
         it('feed changes', function(done) {
-            feed=$('.feed .entry');
-            for(let i=0;i<feed.length;i++)
-                feed2.push(feed[i].innerText);
             expect(compare(feed1,feed2)).toBe(true);
             done();
         });
