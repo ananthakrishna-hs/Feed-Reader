@@ -16,7 +16,7 @@
 - To successfully grab feeds:
     - Names and URLs of feeds must be defined as an array of objects called 'allFeeds' as 'name' and 'URL' respectively and must not be empty.
     - The menu icon containing links to feeds is designed to be hidden by default so use at discretion.
-    - laodFeed() called by the API must add entries and must change when called with different index.
+    - loadFeed() called by the API must add entries and must change when called with different index.
 
 > Note:Requires active internet connection as jQuery, fonts is linked through CDN.
 
